@@ -117,7 +117,9 @@ export default function DailyThought() {
                             {thought.competencies.length > 0 && (
                                 <p className="text-sm mt-1">
                                     <strong>Competencies: </strong>
-                                    
+                                    {thought.competencies.map((id) =>
+                                        competencies.find((c)=> c.id === id)?.skill || `#${id}`).join(", ")
+}
                                 </p>
                             )}  
                         </div>

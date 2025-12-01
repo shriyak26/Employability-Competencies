@@ -22,3 +22,30 @@ export async function GET() {
         return NextResponse.json({error: "Failed to fetch competencies."}, {status: 500});
     }
 } 
+
+
+
+
+
+
+
+
+
+import NextAuth from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+const handler = NextAuth({
+    providers: [
+    GoogleProvider({
+        clientId:process.env.GOOGLE_CLIENT_ID!,
+        clientSecret:process.env.GOOGLE_CLIENT_SECRET!,
+    }),
+    ],
+    callbacks: {
+        async session({session}){
+            //session.user.email will identify the student
+            return session;
+        }
+    }
+});
+
+export {handler as GET, handler as POST};

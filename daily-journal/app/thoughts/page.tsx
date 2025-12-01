@@ -1,10 +1,30 @@
 "use client";
 import React, { useState, useEffect } from "react";
 
+type Thought = {
+    text: string;
+    time: string;
+    competencies: number[];
+};
+
+type Competency = {
+    id: number;
+    skill: string;
+    description: string;
+};
+
 export default function thoughts() {
-const [thoughts, setThoughts] = 
-    useState<{ text: string; time: string }[]>([]);
-    
+    const [thoughts, setThoughts] =  useState<Thought[]>([]);
+    const [competencies, setCompetencies] = useState<Competency[]>([]);
+
+    useEffect(() => {
+            async function fetchCompetencies() {
+                const res = await fetch("/api/competencies");
+                const data = await res.json();
+                setCompetencies(data);
+            }
+            fetchCompetencies();
+        }, []);
     // Load thoughts from localStorage on page load
     useEffect(() => {
         const savedThoughts = localStorage.getItem("dailyThoughts");
@@ -24,6 +44,14 @@ const [thoughts, setThoughts] =
                                 className="bg-white/20 p-3 rounded-lg shadow-sm">
                                 <p className="text-lg">{thought.text}</p>
                                 <p className="text-sm opacity-80 mt-1">{thought.time}</p>    
+                                {thought.competencies.length > 0 && (
+                                <p className="text-sm mt-1">
+                                    <strong>Competencies: </strong>
+                                    {thought.competencies.map((id) =>
+                                        competencies.find((c)=> c.id === id)?.skill || `#${id}`).join(", ")
+}
+                                </p>
+                            )}  
                             </div>
                         ))
                     )}
