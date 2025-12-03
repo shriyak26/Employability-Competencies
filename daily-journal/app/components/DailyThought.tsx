@@ -13,6 +13,13 @@ type Competency = {
     description: string;
 };
 
+type EntryFromDB={
+    id:number;
+    text:string;
+    created_at:string;
+    competencies:{competency_id: number}[];
+}
+
 export default function DailyThought() {
     // input is the variable and setInput updates the variable
     const [input, setInput] = useState("");
